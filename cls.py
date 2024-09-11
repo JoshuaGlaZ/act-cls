@@ -10,7 +10,7 @@ def generate_unique_nrp(count=3):
     while len(nrp_set) < count:
         gen_random = random.randrange(20, 70)
         if str(gen_random) != os.getenv('CODE'):
-            nrp_set.add(os.getenv('TMP') + gen_random)
+            nrp_set.add(os.getenv('TMP') + str(gen_random))
     return list(nrp_set)
 
 
