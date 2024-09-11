@@ -1,4 +1,4 @@
-name: Run Request with Stored Headers
+name: Run CLS Request
 
 on:
   push:
@@ -15,47 +15,20 @@ jobs:
 
     - name: Set up Python
       uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
 
-    - name: Install dependencies
-      run: pip install requests
+    - name: Install required Python libraries
+      run: |
+        python -m pip install requests
 
     - name: Run Request
       env:
-        NAME: ${{ secrets.NAME }}
+        CODE : ${{ secrets.CODE }}
         COOKIE: ${{ secrets.COOKIE }}
-        URL: ${{ secrets.URL }}
         HEADER_JSON: ${{ secrets.HEADER_JSON }}
-        PARAM_JSON: ${{ secrets.PARAM_JSON }}
+        NAME: ${{ secrets.NAME }}
+        NOHP: ${{ secrets.NOHP }}
+        PARAM: ${{ secrets.PARAM }}
+        TMP: ${{ secrets.TMP }}
+        URL: ${{ secrets.URL }}
       run: |
-        import requests
-        import json
-
-        session = requests.Session()
-        session.cookies.set('${{ env.NAME }}', '${{ env.COOKIE }}')
-        headers = json.loads('${{ env.HEADER_JSON }}')
-        params = json.loads('${{ env.PARAM_JSON}}')
-
-        body_params = {
-            'idbiaya': '',
-            'idpeminjaman': '',
-            'txtMode': 'add',
-            'total_detail': '3',
-            'idruangpinjam': '1',
-            'tglpakai': '2024-09-11',
-            'jam_mulai': '15:00:00',
-            'jam_selesai': '15:30:00',
-            'nohp': '082238825781',
-            'tujuan_penggunaan': 'Belajar/Tugas Kelompok',  # Decoded usage purpose
-            'detail_0': 'on',
-            'idanggota_0': '160422010',
-            'detail_1': 'on',
-            'idanggota_1': '160422011',
-            'detail_2': 'on',
-            'idanggota_2': '160422012'
-        }
-        
-        response = session.get(${{ env.URL }}, params=param, headers=headers, data=body_params)
-        print(response.text)
-        print(response.status_code)
+        python cls.py
